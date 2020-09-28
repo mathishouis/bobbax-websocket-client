@@ -1,2 +1,2 @@
 # bobbax-websocket-client
-Websocket Client for Bobbax.fr
+u can use it to make ur own websocket system for your hotel :3
