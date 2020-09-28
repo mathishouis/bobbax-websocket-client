@@ -23,29 +23,19 @@ export class OpenFriendsEvent {
         
         friendsOpenButton.onclick = function() {
             
-            if(friendsComponent.style.display === 'none') {
+        const dataPacket = {
+            packetId: OutgoingFriendsEvents.OpenFriendsEvent,
+                data: [
+                    {
+                        ssoTicket: client.getSSO()
+                    }
+                ]
+            };
+            const openFriendsEvent = new OpenFriendsEvent(dataPacket);
+            openFriendsEvent.sendToServer();
                 
-                friendsComponent.style.display = 'block';
-                const dataPacket = {
-                    packetId: OutgoingFriendsEvents.OpenFriendsEvent,
-                    data: [
-                        {
-                            ssoTicket: client.getSSO()
-                        }
-                    ]
-                };
-                const openFriendsEvent = new OpenFriendsEvent(dataPacket);
-                openFriendsEvent.sendToServer();
-                
-            }
-            
-            else {
-                
-                friendsComponent.style.display = 'none';
-                
-            }
-        
         }
         
     }
+    
 }
