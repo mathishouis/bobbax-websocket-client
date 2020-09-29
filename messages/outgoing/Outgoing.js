@@ -1,6 +1,7 @@
 export const OutgoingUserEvents = {
     
     UserLoginEvent: 992,
+    UserPingEvent: 899,
     
 };
 

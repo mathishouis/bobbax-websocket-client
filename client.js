@@ -2,6 +2,7 @@ import { Networking } from "./networking/Networking.js";
 import { OutgoingUserEvents } from "./messages/outgoing/Outgoing.js";
 import { OutgoingManager } from "./messages/outgoing/OutgoingManager.js";
 import { UserLoginEvent } from "./messages/outgoing/user/UserLoginEvent.js";
+import { UserPingEvent } from "./messages/outgoing/user/UserPingEvent.js";
 import { Log } from "./util/logger/Logger.js";
 import { IncomingManager } from "./messages/incoming/IncomingManager.js";
 
@@ -16,6 +17,7 @@ export class Client {
         this.onCloseWS();
         this.onMessageWS();
         this.eventListener();
+        this.ping();
         
     }
     
@@ -34,6 +36,18 @@ export class Client {
     getWS() {
         
         return this.ws;
+        
+    }
+    
+    ping() {
+        
+        setInterval(
+            function() { 
+            
+                const userPingEvent = new UserPingEvent();
+                userPingEvent.sendToServer();
+                
+        }, 30 * 1000);
         
     }
     
@@ -57,11 +71,20 @@ export class Client {
         }
     }
     
+    tryReconnect() {
+        
+        Log('Trying to reconnect to WS server...','warning');
+        this.ws = new Networking("ws", "localhost", "4567");
+        
+    }
+    
     onCloseWS() {
         
         Log('Disconnected from WS server!','error');
+        setTimeout(this.tryReconnect(), 30 * 1000);
         
     }
+    
     
     onMessageWS() {
         
